@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>게시판 | Busan Vibes</title>
+  <link rel="stylesheet" href="common.css">
+</head>
+<body>
+  <header class="site-header" role="banner">
+    <div class="site-title">Busan Vibes</div>
+    <nav class="site-nav" role="navigation" aria-label="Main navigation">
+      <a href="index.html" target="_blank" rel="noopener noreferrer">홈</a>
+      <a href="places.html" target="_blank" rel="noopener noreferrer">명소</a>
+      <a href="food.html" target="_blank" rel="noopener noreferrer">맛집</a>
+      <a href="tips.html" target="_blank" rel="noopener noreferrer">여행 팁</a>
+      <a href="board.html" class="active" target="_blank" rel="noopener noreferrer">게시판</a>
+      <a href="map.html" target="_blank" rel="noopener noreferrer">지도</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">게시판</p>
+            <h1>부산 여행 후기와 팁을 공유해 보세요</h1>
+          </div>
+          <p>간단한 제목과 내용을 입력하면 Supabase 게시판에 저장됩니다.</p>
+        </div>
+
+        <div class="board-grid">
+          <form id="boardForm" class="board-form" aria-label="Travel board form">
+            <label>
+              <span>제목</span>
+              <input id="boardTitle" type="text" name="title" required placeholder="부산 여행의 기억을 한 줄로 남겨보세요">
+            </label>
+            <label>
+              <span>작성자</span>
+              <input id="boardAuthor" type="text" name="author" required placeholder="이름을 입력하세요">
+            </label>
+            <label>
+              <span>내용</span>
+              <textarea id="boardContent" name="content" rows="6" required placeholder="부산에서 좋았던 장소나 팁을 공유해보세요"></textarea>
+            </label>
+            <button class="btn btn-primary" type="submit">게시물 작성</button>
+          </form>
+
+          <div class="board-feed">
+            <div class="board-preview">
+              <h3>게시물 목록</h3>
+              <p id="boardStatus" class="board-status">로딩 중...</p>
+            </div>
+            <div id="boardList" class="board-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">© 2026 Busan Vibes. 부산 여행 가이드.</footer>
+
+  <script src="supabase-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.43.0/dist/umd/supabase.min.js"></script>
+  <script>
+    const boardForm = document.querySelector("#boardForm");
+    const boardList = document.querySelector("#boardList");
+    const boardStatus = document.querySelector("#boardStatus");
+    let supabaseClient = null;
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    async function loadBoardPosts() {
+      if (!supabaseClient) return;
+      boardStatus.textContent = "로딩 중...";
+
+      const { data, error } = await supabaseClient
+        .from("posts")
+        .select("id,title,author,content,created_at")
+        .order("created_at", { ascending: false })
+        .limit(20);
+
+      if (error) {
+        boardStatus.textContent = "게시물을 불러오는 중 오류가 발생했습니다.";
+        console.error(error);
+        return;
+      }
+
+      if (!data || !data.length) {
+        boardStatus.textContent = "아직 게시물이 없습니다.";
+        boardList.innerHTML = "";
+        return;
+      }
+
+      boardStatus.textContent = "";
+      boardList.innerHTML = data.map((post) => {
+        const date = new Date(post.created_at).toLocaleDateString("ko-KR", {
+          year: "numeric",
+          month: "short",
+          day: "numeric"
+        });
+
+        return `
+          <article class="board-card">
+            <div class="board-card-header">
+              <strong>${escapeHtml(post.title)}</strong>
+              <time datetime="${post.created_at}">${date}</time>
+            </div>
+            <p class="board-author">${escapeHtml(post.author)}</p>
+            <p>${escapeHtml(post.content)}</p>
+          </article>
+        `;
+      }).join("");
+    }
+
+    async function submitBoardPost(event) {
+      event.preventDefault();
+
+      if (!supabaseClient) {
+        boardStatus.textContent = "게시판 설정을 확인하세요.";
+        return;
+      }
+
+      const title = document.querySelector("#boardTitle").value.trim();
+      const author = document.querySelector("#boardAuthor").value.trim();
+      const content = document.querySelector("#boardContent").value.trim();
+
+      if (!title || !author || !content) {
+        boardStatus.textContent = "모든 항목을 입력해주세요.";
+        return;
+      }
+
+      const { error } = await supabaseClient
+        .from("posts")
+        .insert([{ title, author, content }]);
+
+      if (error) {
+        boardStatus.textContent = "게시물 등록 중 오류가 발생했습니다.";
+        console.error(error);
+        return;
+      }
+
+      boardForm.reset();
+      boardStatus.textContent = "게시물이 등록되었습니다.";
+      loadBoardPosts();
+    }
+
+    function initBoard() {
+      if (!window.SUPABASE_CONFIG || !window.SUPABASE_CONFIG.url || !window.SUPABASE_CONFIG.anonKey) {
+        boardStatus.textContent = "Supabase 설정이 필요합니다.";
+        return;
+      }
+
+      if (!window.supabase || !window.supabase.createClient) {
+        boardStatus.textContent = "Supabase 클라이언트를 불러올 수 없습니다.";
+        return;
+      }
+
+      supabaseClient = window.supabase.createClient(window.SUPABASE_CONFIG.url, window.SUPABASE_CONFIG.anonKey, {
+        auth: { persistSession: false }
+      });
+      loadBoardPosts();
+    }
+
+    boardForm.addEventListener("submit", submitBoardPost);
+    initBoard();
+  </script>
+</body>
+</html>

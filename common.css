@@ -542,11 +542,100 @@ h2 {
   margin-bottom: 6px;
 }
 
-.map-area {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-}
+  #board {
+    background: #fff;
+  }
+
+  .board-grid {
+    display: grid;
+    grid-template-columns: 1fr minmax(320px, 420px);
+    gap: 24px;
+    align-items: start;
+  }
+
+  .board-form,
+  .board-feed {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 14px 30px rgba(24, 33, 47, 0.08);
+  }
+
+  .board-form label {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 18px;
+    font-weight: 700;
+  }
+
+  .board-form input,
+  .board-form textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font: inherit;
+    resize: vertical;
+    background: #fff;
+    color: var(--ink);
+  }
+
+  .board-form textarea {
+    min-height: 160px;
+  }
+
+  .board-feed {
+    display: grid;
+    gap: 16px;
+  }
+
+  .board-preview {
+    margin-bottom: 8px;
+  }
+
+  .board-status {
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-size: 0.97rem;
+  }
+
+  .board-list {
+    display: grid;
+    gap: 16px;
+  }
+
+  .board-card {
+    background: #f9fbff;
+    border: 1px solid rgba(0, 127, 158, 0.12);
+    border-radius: 14px;
+    padding: 18px;
+  }
+
+  .board-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .board-card strong {
+    font-size: 1rem;
+  }
+
+  .board-author {
+    margin: 0 0 10px;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .board-card p:last-of-type {
+    margin: 0;
+    color: var(--ink);
+    white-space: pre-wrap;
+  }
+
 
 .map-box {
   min-height: 340px;

@@ -21,6 +21,7 @@
         <a href="places.html" target="_blank" rel="noopener noreferrer" data-ko="명소" data-en="Places" data-fr="Lieux">명소</a>
         <a href="food.html" target="_blank" rel="noopener noreferrer" data-ko="맛집" data-en="Food" data-fr="Restauration">맛집</a>
         <a href="tips.html" target="_blank" rel="noopener noreferrer" data-ko="여행 팁" data-en="Tips" data-fr="Conseils">여행 팁</a>
+        <a href="board.html" target="_blank" rel="noopener noreferrer" data-ko="게시판" data-en="Board" data-fr="Forum">게시판</a>
         <a href="map.html" target="_blank" rel="noopener noreferrer" data-ko="지도" data-en="Map" data-fr="Carte">지도</a>
         <button class="lang-toggle" type="button" id="langBtn" aria-haspopup="true" aria-controls="">English</button>
       </div>
@@ -196,6 +197,7 @@
         </div>
       </div>
     </section>
+
   </main>
 
   <footer>
@@ -225,23 +227,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script>
-    const langBtn = document.querySelector("#langBtn");
-    const navLinks = document.querySelectorAll(".nav-links a");
-    const filterButtons = document.querySelectorAll("[data-filter]");
-    const cards = document.querySelectorAll("[data-category]");
-    const siteSearch = document.querySelector("#siteSearch");
-    const clearSearch = document.querySelector("#clearSearch");
-    const searchStatus = document.querySelector("#searchStatus");
-    const toast = document.querySelector("#toast");
-    const scrollProgress = document.querySelector("#scrollProgress");
-    const placeModal = document.querySelector("#placeModal");
-    const modalImage = document.querySelector("#modalImage");
-    const modalTag = document.querySelector("#modalTag");
-    const modalTitle = document.querySelector("#modalTitle");
-    const modalText = document.querySelector("#modalText");
-    const routeDrawer = document.querySelector("#routeDrawer");
-    const routeList = document.querySelector("#routeList");
     const routes = [
       {
         ko: ["부산역 도착", "감천문화마을 사진 산책", "남포동 로컬 음식", "광안리 야경"],
