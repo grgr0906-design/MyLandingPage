@@ -181,6 +181,20 @@ button {
   transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
 }
 
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  width: 100%;
+}
+
+.logo {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: var(--ink);
+}
+
 .nav-links a:hover,
 .nav-links a.active {
   background: rgba(255, 255, 255, 0.18);
@@ -263,7 +277,7 @@ button {
 
 .hero-inner {
   width: min(1120px, calc(100% - 32px));
-  margin: auto auto 54px;
+  margin: 100px auto 54px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 330px;
   gap: 28px;
