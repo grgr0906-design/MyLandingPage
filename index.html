@@ -24,9 +24,82 @@
         <a href="tips.html" target="_blank" rel="noopener noreferrer" data-ko="여행 팁" data-en="Tips" data-fr="Conseils">여행 팁</a>
         <a href="board.html" target="_blank" rel="noopener noreferrer" data-ko="게시판" data-en="Board" data-fr="Forum">게시판</a>
         <a href="map.html" target="_blank" rel="noopener noreferrer" data-ko="지도" data-en="Map" data-fr="Carte">지도</a>
-        <button class="lang-toggle" type="button" id="langBtn" aria-haspopup="true" aria-controls="">English</button>
+        <button class="icon-btn secondary login-toggle" type="button" id="loginBtn" aria-haspopup="dialog" aria-expanded="false" aria-label="Login">
+          <span class="sr-only" data-ko="로그인" data-en="Login" data-fr="Connexion">Login</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        </button>
+        <button class="icon-btn secondary lang-toggle" type="button" id="langBtn" aria-haspopup="true" aria-expanded="false" aria-label="Language">
+          <span class="sr-only" data-ko="언어 선택" data-en="Language" data-fr="Langue">Language</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 2c2.47 0 4.66.9 6.34 2.34L14 10h-4V5.65A7.93 7.93 0 0112 4zm-6.66 4A7.93 7.93 0 014 12c0 1.3.33 2.53.92 3.59L10 12H5.34zm10.32 0L14 12h5.34A7.93 7.93 0 0019.66 8zM12 20a7.93 7.93 0 01-4.34-1.34L10 14h4v6.35A7.93 7.93 0 0112 20z"/></svg>
+        </button>
+        <div class="lang-menu" id="langMenu" role="menu" aria-hidden="true">
+          <button class="lang-option" type="button" data-lang="ko" role="menuitem">한국어</button>
+          <button class="lang-option" type="button" data-lang="en" role="menuitem">English</button>
+          <button class="lang-option" type="button" data-lang="fr" role="menuitem">Français</button>
+        </div>
       </div>
     </nav>
+    <div class="login-panel" id="loginPanel" role="dialog" aria-modal="true" aria-labelledby="loginPanelTitle" aria-hidden="true">
+      <div class="login-panel-inner">
+        <div class="login-panel-header">
+          <h2 id="loginPanelTitle" data-ko="로그인 또는 회원가입" data-en="Login or Sign Up" data-fr="Connexion ou Inscription">로그인 또는 회원가입</h2>
+          <button class="panel-close" type="button" id="loginCloseBtn" aria-label="Close">×</button>
+        </div>
+        <div class="login-tabs" role="tablist">
+          <button class="tab active" type="button" data-tab="login" role="tab" aria-selected="true" data-ko="로그인" data-en="Login" data-fr="Connexion">로그인</button>
+          <button class="tab" type="button" data-tab="signup" role="tab" aria-selected="false" data-ko="회원가입" data-en="Sign Up" data-fr="Inscription">회원가입</button>
+        </div>
+        <form id="authForm" class="auth-form" autocomplete="on">
+          <input type="hidden" id="authMode" value="login">
+          <label>
+            <span data-ko="이메일" data-en="Email" data-fr="E-mail">이메일</span>
+            <div class="field-with-action">
+              <input id="authEmail" type="email" name="email" required autocomplete="email" placeholder="you@example.com" data-ko-placeholder="you@example.com" data-en-placeholder="you@example.com" data-fr-placeholder="vous@exemple.com">
+              <button class="verify-btn" type="button" data-verify="email" data-ko="이메일 검증" data-en="Verify email" data-fr="Vérifier l'e-mail">이메일 검증</button>
+            </div>
+          </label>
+          <label class="auth-extra auth-username-label" hidden>
+            <span data-ko="아이디" data-en="Username" data-fr="Identifiant">아이디</span>
+            <div class="field-with-action">
+              <input id="authUsername" type="text" name="username" autocomplete="username" placeholder="busanfan" data-ko-placeholder="busanfan" data-en-placeholder="busanfan" data-fr-placeholder="busanfan">
+              <button class="verify-btn" type="button" data-verify="username" data-ko="아이디 중복확인" data-en="Check username" data-fr="Vérifier le nom">아이디 중복확인</button>
+            </div>
+          </label>
+          <label class="auth-extra auth-phone-label" hidden>
+            <span data-ko="전화번호" data-en="Phone" data-fr="Téléphone">전화번호</span>
+            <div class="field-with-action">
+              <input id="authPhone" type="tel" name="phone" autocomplete="tel" placeholder="010-1234-5678" data-ko-placeholder="010-1234-5678" data-en-placeholder="010-1234-5678" data-fr-placeholder="010-1234-5678">
+              <button class="verify-btn" type="button" data-verify="phone" data-ko="전화번호 검증" data-en="Verify phone" data-fr="Vérifier le téléphone">전화번호 검증</button>
+            </div>
+          </label>
+          <label>
+            <span data-ko="비밀번호" data-en="Password" data-fr="Mot de passe">비밀번호</span>
+            <div class="field-with-icon">
+              <input id="authPassword" type="password" name="password" required autocomplete="current-password" placeholder="••••••••" data-ko-placeholder="••••••••" data-en-placeholder="••••••••" data-fr-placeholder="••••••••">
+              <button class="toggle-password" type="button" data-target="authPassword" aria-label="Show password">👁</button>
+            </div>
+          </label>
+          <label class="auth-confirm-label" hidden>
+            <span data-ko="비밀번호 확인" data-en="Confirm password" data-fr="Confirmez le mot de passe">비밀번호 확인</span>
+            <div class="field-with-icon">
+              <input id="authPasswordConfirm" type="password" name="confirmPassword" autocomplete="new-password" placeholder="••••••••" data-ko-placeholder="••••••••" data-en-placeholder="••••••••" data-fr-placeholder="••••••••">
+              <button class="toggle-password" type="button" data-target="authPasswordConfirm" aria-label="Show password">👁</button>
+            </div>
+          </label>
+          <div class="login-actions">
+            <button class="btn btn-primary" type="submit" id="authSubmit" data-ko="로그인" data-en="Login" data-fr="Connexion">로그인</button>
+            <button class="btn btn-secondary" type="button" id="authCancel" data-ko="취소" data-en="Cancel" data-fr="Annuler">취소</button>
+          </div>
+          <p class="login-status" id="authStatus" aria-live="polite"></p>
+          <div class="verify-panel" id="verifyDialog" role="status" aria-live="polite" hidden>
+            <p class="verify-title" data-ko="검증 결과" data-en="Verification result" data-fr="Résultat de vérification">검증 결과</p>
+            <p class="verify-message" id="verifyMessage"></p>
+            <button class="mini-btn verify-close" type="button" id="verifyCloseBtn" data-ko="닫기" data-en="Close" data-fr="Fermer">닫기</button>
+          </div>
+          <p class="login-greeting" id="loginGreeting" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
 
     <div class="top-search">
       <input id="siteSearch" type="search" data-ko-placeholder="부산 명소를 검색해보세요" data-en-placeholder="Search Busan attractions" data-fr-placeholder="Rechercher les attractions de Busan" placeholder="부산 명소를 검색해보세요" aria-label="여행 정보 검색">
